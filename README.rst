@@ -6,6 +6,7 @@ A new way to do scaffolding (works with php-activerecord).
 Sangar Scaffolds create the files for CRUD operations for you! It creates controller, models and views.
 
 You can create forms with the followings elements:
+
 - name
 - textarea
 - radiobuttons
