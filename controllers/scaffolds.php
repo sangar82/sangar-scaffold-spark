@@ -17,7 +17,6 @@ class Scaffolds extends CI_Controller
 		//create control variables
 		$data['title'] = "Scaffolds";
 		$data['updType'] = 'create';
-		//$data['user'] = getTableColumns('users', true);
 
 		//validate the fields of form
 		if ($this->form_validation->run() == FALSE) 
@@ -55,7 +54,7 @@ class Scaffolds extends CI_Controller
 			{
 				$this->session->set_flashdata('message', array( 'type' => 'error', 'text' => $result ));
 				
-				$this->load->view('scaffolds/create', $data);
+				$this->load->view('/scaffolds/create', $data);
 			}
 	  	} 
 	}

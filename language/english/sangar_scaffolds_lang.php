@@ -1,7 +1,7 @@
 <?php
 
-$lang['scaffolds_cont_name'] 			= 	'Controller Name (Plural)';
-$lang['scaffolds_mod_name'] 			= 	'Model Name (Singular)';
+$lang['scaffolds_cont_name'] 			= 	'Write the controller name (Plural)';
+$lang['scaffolds_mod_name'] 			= 	'Write the model name (Singular)';
 $lang['scaffolds_code_info'] 			= 	'Paste code blocks from right and separe these by commas.<br> You can modify all less the type option.';
 
 $lang['scaffolds_delete_bd'] 			= 	'Delete table BD if exists';

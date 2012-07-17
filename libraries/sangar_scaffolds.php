@@ -311,9 +311,9 @@ class Sangar_scaffolds
 	{
 		$sql = "DROP TABLE IF EXISTS ".$this->controller_name.";";
 
-		$result = $this->ci->db->query($sql);
-		//$conn = ActiveRecord\ConnectionManager::get_connection("development");
-		//$result = (object)$conn->query($sql);
+		//$result = $this->ci->db->query($sql);
+		$conn = ActiveRecord\ConnectionManager::get_connection("development");
+		$result = (object)$conn->query($sql);
 
 		if ($result)
 			return TRUE;
@@ -453,9 +453,9 @@ class Sangar_scaffolds
 				break;
 		}
 
-		$result = $this->ci->db->query($sql_table);
-		//$conn = ActiveRecord\ConnectionManager::get_connection("development");
-		//$result = (object)$conn->query($sql_table);
+		//$result = $this->ci->db->query($sql_table);
+		$conn = ActiveRecord\ConnectionManager::get_connection("development");
+		$result = (object)$conn->query($sql_table);
 		
 
 		if ($result)
@@ -488,31 +488,38 @@ class ".ucfirst($this->controller_name)." extends CI_Controller
 	{	
 		//set the title of the page 
 		\$layout['title'] = 'Listado de ".$this->controller_name."';
-
-		//set the pagination configuration array and initialize the pagination
-		\$config = \$this->set_paginate_options('index');
-
-		//Initialize the pagination class
-		\$this->pagination->initialize(\$config);
 ";
 
 if ($this->there_is_a_relational_field)
 {
 $data .= "
 		//control of number page
-		\$data['".$this->relational_field."'] = (\$this->uri->segment(3)) ? \$this->uri->segment(3) : '';
+		\$data['".$this->relational_field."'] = (\$this->uri->segment(2)) ? \$this->uri->segment(2) : '';
 
 		//redirect if it´s no correct
 		if (!\$data['".$this->relational_field."']){
 			\$this->session->set_flashdata('message', array( 'type' => 'warning', 'text' => lang('web_object_not_exist') ) );
-			redirect('".$this->relational_controller."/');
+			redirect('/".$this->relational_controller."/');
 		}
+
+		//set the pagination configuration array and initialize the pagination
+		\$config = \$this->set_paginate_options(\$data['".$this->relational_field."']);
+";
+}
+else
+{
+$data .= "
+		//set the pagination configuration array and initialize the pagination
+		\$config = \$this->set_paginate_options();
 ";
 }
 
 $data.="
+		//Initialize the pagination class
+		\$this->pagination->initialize(\$config);
+
 		//control of number page
-		\$page = (\$this->uri->segment(".(($this->there_is_a_relational_field) ? '4' : '3').")) ? \$this->uri->segment(".(($this->there_is_a_relational_field) ? '4' : '3').") : 1;
+		\$page = (\$this->uri->segment(".(($this->there_is_a_relational_field) ? '3' : '2').")) ? \$this->uri->segment(".(($this->there_is_a_relational_field) ? '3' : '2').") : 1;
 
 		//find all the categories with paginate and save it in array to past to the view
 		\$data['".$this->controller_name."'] = ".$this->model_name_for_calls."::paginate_all(\$config['per_page'], \$page".( ($this->there_is_a_relational_field)  ? ", \$data['$this->relational_field']" : "" ).");
@@ -520,10 +527,10 @@ $data.="
 		//create paginate´s links
 		\$data['links'] = \$this->pagination->create_links();
 
-		//control variables
+		//number page variable
 		\$data['page'] = \$page;
 
-		//Guardamos en la variable \$layout['body'] la vista renderizada users/list. Le pasamos tb la lista de todos los usuarios
+		//load view
 		\$this->load->view('".$this->controller_name."/list', \$data);
 	}
 
@@ -849,15 +856,15 @@ if ($this->there_is_a_relational_field)
 {
 $data .= "
 		//get the \$id and sanitize
-		\$id = ( \$this->uri->segment(4) )  ? \$this->uri->segment(4) : \$this->input->post('id', TRUE);
+		\$id = ( \$this->uri->segment(3) )  ? \$this->uri->segment(3) : \$this->input->post('id', TRUE);
 		\$id = ( \$id != 0 ) ? filter_var(\$id, FILTER_VALIDATE_INT) : NULL;
 
 		//get the relation and sanitize
-		\$data['".$this->relational_field."'] = (\$this->uri->segment(5)) ? \$this->uri->segment(5) : \$this->input->post('".$this->relational_field."', TRUE);
+		\$data['".$this->relational_field."'] = (\$this->uri->segment(4)) ? \$this->uri->segment(4) : \$this->input->post('".$this->relational_field."', TRUE);
 		\$data['".$this->relational_field."'] = ( \$data['".$this->relational_field."'] != 0 ) ? filter_var(\$data['".$this->relational_field."'], FILTER_VALIDATE_INT) : NULL;
 
 		//get the \$page and sanitize
-		\$page = ( \$this->uri->segment(6) )  ? \$this->uri->segment(6) : \$this->input->post('page', TRUE);
+		\$page = ( \$this->uri->segment(5) )  ? \$this->uri->segment(5) : \$this->input->post('page', TRUE);
 		\$page = ( \$page != 0 ) ? filter_var(\$page, FILTER_VALIDATE_INT) : NULL;
 
 		//redirect if it´s no correct
@@ -871,11 +878,11 @@ else
 {
 $data .= "
 		//get the \$id and sanitize
-		\$id = ( \$this->uri->segment(4) )  ? \$this->uri->segment(4) : \$this->input->post('id', TRUE);
+		\$id = ( \$this->uri->segment(3) )  ? \$this->uri->segment(3) : \$this->input->post('id', TRUE);
 		\$id = ( \$id != 0 ) ? filter_var(\$id, FILTER_VALIDATE_INT) : NULL;
 
 		//get the \$page and sanitize
-		\$page = ( \$this->uri->segment(5) )  ? \$this->uri->segment(5) : \$this->input->post('page', TRUE);
+		\$page = ( \$this->uri->segment(4) )  ? \$this->uri->segment(4) : \$this->input->post('page', TRUE);
 		\$page = ( \$page != 0 ) ? filter_var(\$page, FILTER_VALIDATE_INT) : NULL;
 
 		//redirect if it´s no correct
@@ -1442,19 +1449,31 @@ $data .= "
 		$data .= $this->sl.$this->tab."}		
 
 	
-	private function set_paginate_options()
+	private function set_paginate_options(".(($this->there_is_a_relational_field) ? "\$$this->relational_field" : "").")
 	{
 		\$config = array();
-
-		\$config['base_url'] = site_url() . '".$this->controller_name."';
-
-	    \$config['total_rows'] = ".ucfirst($this->model_name)."::count();
+		
+		\$config['base_url'] = site_url() . '".$this->controller_name."".(($this->there_is_a_relational_field) ? "/'.\$$this->relational_field" : "'").";
 
 		\$config['use_page_numbers'] = TRUE;
 
 	    \$config['per_page'] = 10;
+";
 
-	    \$config['uri_segment'] = 2;
+if ($this->there_is_a_relational_field)
+$data .= "
+		\$config['total_rows'] = ".ucfirst($this->model_name)."::count(array('conditions' => array('".$this->relational_field." = ?', \$".$this->relational_field.")));
+
+		\$config['uri_segment'] = 3;";
+
+else
+$data .= "
+		\$config['total_rows'] = ".ucfirst($this->model_name)."::count();
+
+		\$config['uri_segment'] = 2;";
+
+
+$data .= "
 
 	    \$config['first_link'] = \"<< \".lang('web_first');
 	    \$config['first_tag_open'] = \"<span class='pag'>\";
@@ -2092,7 +2111,7 @@ $data .= "
 <div id='content-top'>
     <h2><?=lang('web_list_of', array(':name' => '".ucfirst($this->controller_name)."'))?></h2>
    
-    <a href='".$this->controller_name."/create/".(($this->there_is_a_relational_field) ? "<?=\$$this->relational_field?>/" : "")."<?=\$page?>' class='bcreate'><?=lang('web_create_t', array(':name' => '".$this->model_name."'))?></a>
+    <a href='/".$this->controller_name."/create/".(($this->there_is_a_relational_field) ? "<?=\$$this->relational_field?>/" : "")."<?=\$page?>' class='bcreate'><?=lang('web_create_t', array(':name' => '".$this->model_name."'))?></a>
   
     <span class='clearFix'>&nbsp;</span>
 </div>
@@ -2185,8 +2204,8 @@ $data .= "
 			        	}
 			        }
 
-				$data .= $this->tabx5."<td width='60'><a class='ledit' href='".$this->controller_name."/edit/<?=\$".$this->model_name."->id?>/".(($this->there_is_a_relational_field)  ? "<?=\$$this->model_name->".$this->relational_field."?>/" : "")."<?=\$page?>'><?=lang('web_edit')?></a></td>
-					<td width='60'><a class='ldelete' onClick=\"return confirm('<?=lang('web_confirm_delete')?>')\" href='".$this->controller_name."/delete/<?=\$".$this->model_name."->id?>/<?=\$page?>'><?=lang('web_delete')?></a></td>
+				$data .= $this->tabx5."<td width='60'><a class='ledit' href='/".$this->controller_name."/edit/<?=\$".$this->model_name."->id?>/".(($this->there_is_a_relational_field)  ? "<?=\$$this->model_name->".$this->relational_field."?>/" : "")."<?=\$page?>'><?=lang('web_edit')?></a></td>
+					<td width='60'><a class='ldelete' onClick=\"return confirm('<?=lang('web_confirm_delete')?>')\" href='/".$this->controller_name."/delete/<?=\$".$this->model_name."->id?>/<?=\$page?>'><?=lang('web_delete')?></a></td>
 				</tr>
 				
 			<?php endforeach ?>
