@@ -97,11 +97,11 @@ It Includes pagination and file upload.
 How create a new scaffold
 ************
 
-1 - Write the Controller name you want produce.
-2 - Write the Model name you want produce.
-3 - Copy the code blocks of elements that you need and paste to scaffold code input. Each code block must be separated by commas. The scaffold code is a JSON without the first '{' and the last '}'
-4 - Choose the options that you want
-5 - Scaffold!
+- Write the Controller name you want produce.
+- Write the Model name you want produce.
+- Copy the code blocks of elements that you need and paste to scaffold code input. Each code block must be separated by commas. The scaffold code is a JSON without the first '{' and the last '}'
+- Choose the options that you want
+- Scaffold!
 
 
 
