@@ -35,13 +35,15 @@ for
 
 Create and .htaccess file in your root folder with the following code:
 
-<code>
+
 	AddDefaultCharset UTF-8
 
 	RewriteEngine on
+
 	RewriteCond $1 !^(index\.php|public|robots\.txt)
+	
 	RewriteRule ^(.*)$ /index.php/$1 [L]
-</code>
+
 
 Removing the index.php file on Codeigniter User Guide:
 http://codeigniter.com/user_guide/general/urls.html
