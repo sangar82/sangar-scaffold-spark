@@ -1,7 +1,22 @@
 ###################
 sangar-scaffold-spark
 ###################
-A new way to do scaffolding (works with php-activerecord)
+A new way to do scaffolding (works with php-activerecord).
+
+Sangar Scaffolds create the files for CRUD operations for you! It creates controller, models and views.
+
+You can create forms with the followings elements:
+- name
+- textarea
+- radiobuttons
+- checkboxs
+- select
+- select 1:N (populate the form select with a existent Model)
+- upload images (with thumbnail creation and uploads rules)
+- upload files (with uploads rules)
+
+Each elements have a validations rules and the possibility to do this multilanguage.
+
 
 UNDER DEVELOPMENT!! (The spark isn´t yet into the repository)
 
@@ -76,6 +91,22 @@ It Includes pagination and file upload.
 How create a new scaffold
 ************
 
+
+
+************
+Folder for uploads
+************
+
+If you want to uploads files, you must create a folder in your root folder named public, and inside this, another folder called uploads. It will be here where your files will be uploaded. :)
+
+
+
+
+************
+CSS for scaffolds
+************
+
+If you want, you will find into the resources directory a css to link with your scaffold code. It will look much better. :)
 
 
 
