@@ -23,6 +23,8 @@ You can create forms with the followings elements:
 
 Each elements have a validations rules and the possibility to do this multilanguage.
 
+Create also a paginated list view.
+
 
 UNDER DEVELOPMENT!! (The spark isn´t yet into the repository)
 
@@ -89,8 +91,6 @@ Go to the scaffold page
 Follow the instructions and create a new scaffold
 
 This will create the files that you need to do a CRUD operations (controller, model, and two views: create and list).
-
-It Includes pagination and file upload.
 
 
 ************
