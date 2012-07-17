@@ -13,7 +13,5 @@ version: 0.0.1
 #  be in x.x.x format
 compatibility: 2.1.0
 
-# There are no dependencies now, but when there are, uncomment below.
-#dependencies:
-#  some-spark-1: 1.0.0
-#  some-other-spark-2: 1.0.0
+#dependencies
+php-activerecord: 0.0.2
