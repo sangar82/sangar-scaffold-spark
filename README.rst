@@ -1,6 +1,6 @@
-###################
 sangar-scaffold-spark
-###################
+=====================
+
 A new way to do scaffolding (works with php-activerecord).
 
 Sangar Scaffolds creates the files for CRUD operations for you! 
@@ -26,21 +26,13 @@ Each element has validation rules and the possibility to do it multilanguage.
 Create also a paginated list view.
 
 
-UNDER DEVELOPMENT!! (The spark isn´t yet into the repository)
-
-
-*******************
 Server Requirements
-*******************
+=====================
 
 PHP version 5.3.5 or newer.
 
 
-************
-Sparks Requirements
-************
-
-Disable index_page
+Sparks Requirements: Disable index_page
 =====================
 
 Sangar-scaffold-spark needs that you don't use 'index.php' in your base_url.
@@ -78,13 +70,13 @@ Remove the index.php file on Codeigniter User Guide:
 http://codeigniter.com/user_guide/general/urls.html
 
 
-************
+
 How to use it?
-************
+=====================
 
 You can install via sparks manager:
 
-	todo
+	php tools/spark install -v0.0.1 sangar-scaffold 
 
 
 Or install manually, copy the spark files in your application folder. Each one in its respective folder.
@@ -102,9 +94,9 @@ Follow the instructions and create a new scaffold
 This will create the files which you need to do CRUD operations (controller, model, and two views: create and list).
 
 
-************
+
 How create a new scaffold
-************
+=====================
 
 - Write the Controller name you want produce.
 - Write the Model name you want produce.
@@ -114,18 +106,15 @@ How create a new scaffold
 
 
 
-************
 Folder for uploads
-************
+=====================
 
 If you want to upload files, you must create a folder in your root folder named public, and inside this, another folder called uploads. Your uploads will go there. :)
 
 
 
-
-************
 CSS for scaffolds
-************
+=====================
 
 If you want, you will find a css to link with your scaffold code inside the resources directory. It will look much better. :)
 
