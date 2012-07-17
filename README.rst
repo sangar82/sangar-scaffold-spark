@@ -32,6 +32,16 @@ Server Requirements
 PHP version 5.3.5 or newer.
 
 
+Dependencies
+=====================
+
+If you install this sparks via Sparks Manager, it will install the dependencies for you
+
+If you want to install the Sangar Scaffold Spark manually, you need to install before the php-activerecord sparks
+
+	php tools/spark install -v0.0.2 php-activerecord
+
+
 Sparks Requirements: Disable index_page
 =====================
 

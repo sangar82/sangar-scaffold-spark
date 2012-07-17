@@ -14,4 +14,6 @@ version: 0.0.1
 compatibility: 2.1.0
 
 #dependencies
-php-activerecord: 0.0.2
+dependencies: php-activerecord: 0.0.2
+
+tags: ["scaffold","scaffolding","code generator", "generator", "php-activerecord"]
