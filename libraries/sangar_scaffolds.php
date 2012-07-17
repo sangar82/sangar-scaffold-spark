@@ -1812,7 +1812,7 @@ $data .= "
 		$data .= "
 <div id='content-top'>
     <h2><?=(\$updType == 'create') ? lang('web_create_t', array(':name' => '$this->model_name')) : lang('web_edit_t', array(':name' => '$this->model_name'));?></h2>
-    <a href='".$this->controller_name."/".(($this->there_is_a_relational_field) ? "<?=\$$this->relational_field?>/" : "")."<?=\$page?>' class='bforward'><?=lang('web_back_to_list')?></a>
+    <a href='/".$this->controller_name."/".(($this->there_is_a_relational_field) ? "<?=\$$this->relational_field?>/" : "")."<?=\$page?>' class='bforward'><?=lang('web_back_to_list')?></a>
     <span class='clearFix'>&nbsp;</span>
 </div>
 
@@ -2120,7 +2120,7 @@ $data .= "
 
 <div class='clear'></div>
 
-	<table class='ftable' cellpadding='5' cellspacing='5'>
+	<table class='ftable' cellpadding='5' cellspacing='0'>
 
 		<thead>";
 

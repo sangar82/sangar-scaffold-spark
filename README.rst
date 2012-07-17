@@ -72,3 +72,10 @@ This will create the files that you need to do a CRUD operations (controller, mo
 It Includes pagination and file upload.
 
 
+************
+How create a new scaffold
+************
+
+
+
+
