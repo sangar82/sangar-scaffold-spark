@@ -69,6 +69,6 @@ Follow the instructions and create a new scaffold
 
 This will create the files that you need to do a CRUD operations (controller, model, and two views: create and list).
 
-
+It Includes pagination and file upload.
 
 
