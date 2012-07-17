@@ -37,7 +37,7 @@ PHP version 5.3.5 or newer.
 
 
 ************
-Installation
+Sparks Requirements
 ************
 
 Disable index_page
@@ -81,6 +81,15 @@ http://codeigniter.com/user_guide/general/urls.html
 ************
 How to use it?
 ************
+
+You can install via sparks manager:
+
+	todo
+
+
+Or install manually,  copy the spark files  in your application folder. Each one in their respective folder.
+
+
 
 Copy the file controllers/scaffolds.php and views/scaffolds_create.php of this spark in your application directory. Each one in their respective folders.
 
