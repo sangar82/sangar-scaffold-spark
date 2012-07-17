@@ -95,6 +95,11 @@ Or install manually, copy the spark files in your application folder. Each one i
 
 Copy the file controllers/scaffolds.php and views/scaffolds_create.php of this spark in your application directory. Each one in its respective folders.
 
+Add this line to your config.php
+
+	$autoload['sparks'] = array('sangar-scaffold/0.0.1', 'php-activerecord/0.0.2');
+	
+
 Go to the scaffold page
 
 	www.yourdomain.com/scaffolds
