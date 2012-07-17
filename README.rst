@@ -75,9 +75,7 @@ Create and .htaccess file in your root folder with the following code:
 
 
 
-Remove the index.php file on Codeigniter User Guide:
-
-http://codeigniter.com/user_guide/general/urls.html
+Remove the index.php file on Codeigniter User Guide: http://codeigniter.com/user_guide/general/urls.html
 
 
 
@@ -98,7 +96,7 @@ Copy the file controllers/scaffolds.php and views/scaffolds_create.php of this s
 Add this line to your config.php
 
 	$autoload['sparks'] = array('sangar-scaffold/0.0.1', 'php-activerecord/0.0.2');
-	
+
 
 Go to the scaffold page
 

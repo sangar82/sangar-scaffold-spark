@@ -182,14 +182,13 @@
   <h3><a href="#">Textarea</a></h3>
   <div>
   <pre>
-  "descripcion":
+  "description":
   {
     "type"           : "textarea",
     "minlength"      : "0",
     "maxlength"      : "500",      
     "required"       : "FALSE",
-    "multilanguage"  : "FALSE",
-    "ckeditor"       : "FALSE"
+    "multilanguage"  : "FALSE"
   }
   </pre>
   </div>  
