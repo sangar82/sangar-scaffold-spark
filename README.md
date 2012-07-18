@@ -1,6 +1,6 @@
 #sangar-scaffold-spark
 
-A new way to do scaffolding (works with php-activerecord).
+###A new way to do scaffolding (works with php-activerecord and MySql).
 
 Sangar Scaffolds creates the files for CRUD operations for you! 
 
@@ -28,6 +28,7 @@ Create also a paginated list view.
 ##Server Requirements
 
 PHP version 5.3.5 or newer.
+This version only works with MySql (postgres in progress..)
 
 
 ##Dependencies
@@ -39,7 +40,7 @@ If you want to install the Sangar Scaffold Spark manually, you need to install b
 	php tools/spark install -v0.0.2 php-activerecord
 
 
-##Sangar-scaffold-spark Requirement
+##Sangar-scaffold-spark requirements
 
 
 ###Disable index_page
