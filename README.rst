@@ -26,8 +26,7 @@ Each element has validation rules and the possibility to do it multilanguage.
 Create also a paginated list view.
 
 
-Server Requirements
-=====================
+##Server Requirements
 
 PHP version 5.3.5 or newer.
 
@@ -78,7 +77,7 @@ Create and .htaccess file in your root folder with the following code:
 Remove the index.php file on Codeigniter User Guide: http://codeigniter.com/user_guide/general/urls.html
 
 
-sangar-scaffold-spark Requirement: Access via domain, not via localhost
+Sangar-scaffold-spark Requirement: Access via domain, not via localhost
 =====================
 
 You must create a virtualhost (and modify your host file) and access your Codeigniter project via domain, don't use localhost. 
