@@ -122,10 +122,16 @@ This will create the files which you need to do CRUD operations (controller, mod
 
 
 
+##Multilanguage form inputs
+
+If you need that your inputs could be multilingual, you must create an array of languages at your config.php
+    
+    $config['languages'] = array("en" => "english","es" => "spanish");
+
+
 ##Folder for uploads
 
 If you want to upload files, you must create a folder in your root folder named public, and inside this, another folder called uploads. Your uploads will go there. :)
-
 
 
 ##CSS for scaffolds
