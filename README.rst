@@ -42,7 +42,7 @@ If you want to install the Sangar Scaffold Spark manually, you need to install b
 	php tools/spark install -v0.0.2 php-activerecord
 
 
-Sparks Requirements: Disable index_page
+Sangar-scaffold-spark Requirement: Disable index_page
 =====================
 
 Sangar-scaffold-spark needs that you don't use 'index.php' in your base_url.
@@ -77,6 +77,12 @@ Create and .htaccess file in your root folder with the following code:
 
 Remove the index.php file on Codeigniter User Guide: http://codeigniter.com/user_guide/general/urls.html
 
+
+sangar-scaffold-spark Requirement: Access via domain, not via localhost
+=====================
+
+You must create a virtualhost (and modify your host file) and access your Codeigniter project via domain, don't use localhost. 
+For example, you must use www.yourdomain.com instead of http://localhost/yourdomain
 
 
 How to use it?
