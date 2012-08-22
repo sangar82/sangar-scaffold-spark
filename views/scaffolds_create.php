@@ -139,7 +139,16 @@
     <br><br>
     
     <p>
-      <?=lang('web_options')?>:<br><br>
+      <h2><?=lang('web_options')?>:</h2>
+      
+      <label for='scaffold_model_type'>Database Class:</label> 
+      <select name='scaffold_model_type' id='scaffold_model_type'>
+        <option value="activerecord">Codeigniter Active Record Class</option>
+        <option value="phpactiverecord">PHP-ActiveRecord</option>
+      </select>
+
+      <br><br>
+
       <input type='checkbox' checked name='scaffold_delete_bd' id='scaffold_delete_bd' value="<?php echo set_value('scaffold_delete_bd', '1'); ?>" /> <label class='labelforminline' for="scaffold_delete_bd"><?=lang('scaffolds_delete_bd')?></label><br/>
       <input type='checkbox' checked name='scaffold_bd' id='scaffold_bd' value='<?php echo set_value('scaffold_bd' , '1'); ?>' /> <label class='labelforminline' for="scaffold_bd"><?=lang('scaffolds_create_bd')?></label><br/>
       <input type='checkbox' checked name='scaffold_routes' id='scaffold_routes' value='<?php echo set_value('scaffold_routes' , '1'); ?>' /> <label class='labelforminline' for="scaffold_routes"><?=lang('scaffolds_modify_routes')?></label><br/>

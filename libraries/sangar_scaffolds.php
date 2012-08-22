@@ -10,6 +10,7 @@ class Sangar_scaffolds
 	public $model_name;
 	public $model_name_for_calls;
 	public $scaffold_code;
+	public $scaffold_model_type;
 
 	public $arrayjson;
 	public $errors;
@@ -123,7 +124,14 @@ class Sangar_scaffolds
 		//creamos el modelo
 		if ($this->create_model)
 		{	
-			$result = $this->create_model();
+			if ($this->scaffold_model_type === "activerecord")
+			{
+				$result = $this->create_model_ar();
+			} 
+			else if ($this->scaffold_model_type === "phpactiverecord")
+			{
+				$result = $this->create_model();
+			} 			
 
 			if ($result === FALSE)
 			{
@@ -194,10 +202,11 @@ class Sangar_scaffolds
 		$this->scaffold_bd 				=	$data['scaffold_bd'];
 		$this->scaffold_routes 			=	$data['scaffold_routes'];
 		$this->scaffold_menu 			=	$data['scaffold_menu'];
-		$this->create_controller		=	$data['create_controller'];;
-		$this->create_model				=	$data['create_model'];;	
-		$this->create_view_create		=	$data['create_view_create'];;
-		$this->create_view_list			=	$data['create_view_list'];;
+		$this->create_controller		=	$data['create_controller'];
+		$this->create_model				=	$data['create_model'];
+		$this->create_view_create		=	$data['create_view_create'];
+		$this->create_view_list			=	$data['create_view_list'];
+		$this->scaffold_model_type		= 	$data['scaffold_model_type'];
 	}
 
 
@@ -555,12 +564,12 @@ $data.="
 
         if ($this->there_is_a_relational_field)
         {
-			$data .= "\$data['".$index."'] = ( \$this->uri->segment(4) )  ? \$this->uri->segment(4) : \$this->input->post('".$index."', TRUE);";
-        	$data .= $this->sl.$this->tabx2."\$data['page'] = ( \$this->uri->segment(5) )  ? \$this->uri->segment(5) : \$this->input->post('page', TRUE);";
+			$data .= "\$data['".$index."'] = ( \$this->uri->segment(3) )  ? \$this->uri->segment(3) : \$this->input->post('".$index."', TRUE);";
+        	$data .= $this->sl.$this->tabx2."\$data['page'] = ( \$this->uri->segment(4) )  ? \$this->uri->segment(4) : \$this->input->post('page', TRUE);";
         }
         else
         {
-			$data .= "\$data['page'] = ( \$this->uri->segment(4) )  ? \$this->uri->segment(4) : \$this->input->post('page', TRUE);";
+			$data .= "\$data['page'] = ( \$this->uri->segment(3) )  ? \$this->uri->segment(3) : \$this->input->post('page', TRUE);";
         }
 		
         $data .= "
@@ -829,6 +838,8 @@ $data .= "
 				$data .= $this->sl.$this->tabx3."\$form_data = array_merge(\$form_data, \$form_data_aux);";
 
 			// run insert model to write data to db
+			if ($this->scaffold_model_type === 'phpactiverecord')
+			{
 			$data .= "
 
 			\$".$this->model_name." = ".$this->model_name_for_calls."::create(\$form_data);
@@ -843,7 +854,27 @@ $data .= "
 				\$this->session->set_flashdata('message', array( 'type' => 'error', 'text' => \$".$this->model_name."->errors->full_messages() ));
 			}
 
-			".(($this->there_is_a_relational_field)  ? "redirect(\"".$this->controller_name."/\".\$this->input->post('".$this->relational_field."', TRUE));" : "redirect('".$this->controller_name."/');")."
+			";
+			}
+			else if ($this->scaffold_model_type === 'activerecord')
+			{
+			$data .= "
+
+			\$".$this->model_name." = ".$this->model_name_for_calls."::create(\$form_data);
+
+			if ( \$".$this->model_name." ) // the information has therefore been successfully saved in the db
+			{
+				\$this->session->set_flashdata('message', array( 'type' => 'success', 'text' => lang('web_create_success') ));
+			}
+			else
+			{
+				\$this->session->set_flashdata('message', array( 'type' => 'error', 'text' => lang('web_create_success') ));
+			}
+
+			";		
+			}
+
+			$data .= (($this->there_is_a_relational_field)  ? "redirect(\"".$this->controller_name."/\".\$this->input->post('".$this->relational_field."', TRUE));" : "redirect('".$this->controller_name."/');")."
 		
 	  	} 
 	}
@@ -923,7 +954,7 @@ $data .= "
 		if (\$this->form_validation->run() == FALSE) // validation hasn't been passed
 		{
 			//search the item to show in edit form
-			\$data['".$this->model_name."'] = ".$this->model_name_for_calls."::find_by_id(\$id);
+			\$data['".$this->model_name."'] = ".$this->model_name_for_calls."::find(\$id);
 			
 			//load the view and the layout
 			\$this->load->view('".$this->controller_name."/create', \$data);
@@ -1180,11 +1211,11 @@ $data .= "
 			\$form_data = array_merge(\$form_data_aux, \$form_data);
 		
 			//find the item to update
-			\$".$this->model_name." = ".$this->model_name_for_calls."::find(\$this->input->post('id', TRUE));
-			\$".$this->model_name."->update_attributes(\$form_data);
+			".( ($this->scaffold_model_type == 'phpactiverecord') ? "\$".$this->model_name." = ".$this->model_name_for_calls."::find(\$this->input->post('id', TRUE));": "" )."
+			".( ($this->scaffold_model_type == 'activerecord') ? "\$".$this->model_name." = ".$this->model_name_for_calls."::update_attributes(\$this->input->post('id', TRUE), \$form_data);" : "\$".$this->model_name.'->update_attributes($form_data);' )."
 
-			// run insert model to write data to db
-			if ( \$".$this->model_name."->is_valid()) // the information has therefore been successfully saved in the db
+			// the information has therefore been successfully saved in the db
+			".( ($this->scaffold_model_type == 'phpactiverecord') ? "if ( \$".$this->model_name."->is_valid()) ": "if ( \$".$this->model_name.") " )."
 			{
 ";
 			if ($this->there_is_an_image or $this->there_is_a_file)
@@ -1219,7 +1250,7 @@ $data .= "
 				redirect(\"".$this->controller_name."/".(($this->there_is_a_relational_field) ? "\".\$this->input->post('".$this->relational_field."', TRUE).\"/\"" : "\"").".\$page);
 			}
 
-			if (\$".$this->model_name."->is_invalid())
+			".( ($this->scaffold_model_type == 'phpactiverecord') ? "if ( \$".$this->model_name."->is_invalid()) ": "else" )."
 			{
 				\$this->session->set_flashdata('message', array( 'type' => 'error', 'text' => \$".$this->model_name."->errors->full_messages() ) );
 				redirect(\"".$this->controller_name."/".(($this->there_is_a_relational_field) ? "\".\$this->input->post('".$this->relational_field."', TRUE).\"/\"" : "\"").".\$page);
@@ -1289,7 +1320,7 @@ $data .= "
 $data .= "
 
 		//delete the item
-		if ( \$".$this->model_name."->delete() == TRUE) 
+		".( ($this->scaffold_model_type == 'phpactiverecord') ? "if ( \$".$this->model_name."->delete() == TRUE) ": "if (".$this->model_name_for_calls."::delete(\$id) == TRUE) " )."
 		{
 			\$this->session->set_flashdata('message', array( 'type' => 'success', 'text' => lang('web_delete_success') ));";	
 
@@ -1339,6 +1370,7 @@ $data .= "
 	{
 		//Creamos los parametros de la funcion del constructor.
 		// More validations: http://codeigniter.com/user_guide/libraries/form_validation.html";
+		
     	foreach ($this->arrayjson as $index => $value )
     	{
       		switch ($value['type'])
@@ -1461,10 +1493,21 @@ $data .= "
 ";
 
 if ($this->there_is_a_relational_field)
+
+if ($this->scaffold_model_type == 'phpactiverecord')
+{	
 $data .= "
 		\$config['total_rows'] = ".ucfirst($this->model_name)."::count(array('conditions' => array('".$this->relational_field." = ?', \$".$this->relational_field.")));
 
 		\$config['uri_segment'] = 3;";
+} 
+else if ($this->scaffold_model_type == 'activerecord')
+{
+$data .= "
+		\$config['total_rows'] = ".ucfirst($this->model_name)."::count(\$".$this->relational_field.");
+
+		\$config['uri_segment'] = 3;";
+} 
 
 else
 $data .= "
@@ -1723,6 +1766,128 @@ class ".$this->model_name_for_calls." extends ActiveRecord\Model {
 		else
 			return FALSE;
 	}
+
+
+
+
+
+
+
+
+
+	private function create_model_ar()
+	{
+		$data = "
+<?php
+class ".$this->model_name_for_calls." extends CI_Model{
+
+	function __construct()
+    {
+        // Call the Model constructor
+        parent::__construct();
+    }
+
+
+    function create(\$data)
+    {
+    	\$query = \$this->db->insert('".$this->controller_name."', \$data); 
+    	return \$query;
+    }
+
+
+    function find(\$id)
+    {
+    	\$query = \$this->db->get_where('".$this->controller_name."', array('id' => \$id));
+    	\$result = \$query->result();
+    	return (\$result[0]);
+    }
+
+
+    function exists(\$id)
+    {
+    	\$query = \$this->db->get_where('".$this->controller_name."', array('id' => \$id));
+    	\$result = \$query->result();
+
+    	if (\$result)
+    		return TRUE;
+    	else
+    		return FALSE;
+    }
+
+
+    function count(".( ($this->there_is_a_relational_field)  ? "\$$this->relational_field" : "" ).")
+    {
+    	".( ($this->there_is_a_relational_field)  ? "\$this->db->where('".$this->relational_field."', \$$this->relational_field); " : "" )."
+    	return \$this->db->count_all_results('".$this->controller_name."');
+    }
+
+
+    function update_attributes(\$id, \$data)
+    {
+    	\$this->db->where('id', \$id);
+		\$query = \$this->db->update('".$this->controller_name."', \$data);
+
+		return \$query;
+    }
+
+
+    function delete(\$id)
+    {
+    	\$query = \$this->db->delete('".$this->controller_name."', array('id' => \$id)); 
+
+    	return \$query;
+    }
+
+
+	function paginate_all(\$limit, \$page".( ($this->there_is_a_relational_field)  ? ", \$$this->relational_field" : "" ).")
+	{
+		\$offset = \$limit * ( \$page - 1) ;
+		".( ($this->there_is_a_relational_field)  ? "\$this->db->where('".$this->relational_field."', \$$this->relational_field); " : "" )."
+		\$this->db->order_by('id', 'desc');
+		\$query = \$this->db->get('".$this->controller_name."', \$limit, \$offset); 
+
+		\$result = array();
+
+		foreach (\$query->result() as \$row)
+		{
+		    \$result[] = \$row;
+		}
+
+		if (\$result)
+		{
+			return \$result;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+
+}
+";
+
+	if ( $this->save_file($this->model_name, "models/", trim( $data ) ) === TRUE )
+		return TRUE;
+	else
+		return FALSE;
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	private function create_view_create()
@@ -2301,7 +2466,10 @@ $data .= "
 			$file[$i] = $file[($i-1)];
 		}
 
-		$file[$pos+1] = $this->tabx5."<td><a href=\"".$this->controller_name."/<?=\$".$this->relational_model."->id?>\">".ucfirst($this->controller_name)." (<?= ".$this->model_name_for_calls."::count(array('conditions' => array('".$this->relational_field." = ?', \$".$this->relational_model."->id)) )?>) </a></td>".$this->sl;
+		if ($this->scaffold_model_type == 'phpactiverecord')
+			$file[$pos+1] = $this->tabx5."<td><a href=\"/".$this->controller_name."/<?=\$".$this->relational_model."->id?>\">".ucfirst($this->controller_name)." (<?= ".$this->model_name_for_calls."::count(array('conditions' => array('".$this->relational_field." = ?', \$".$this->relational_model."->id)) )?>) </a></td>".$this->sl;
+		else if ($this->scaffold_model_type == 'activerecord')
+			$file[$pos+1] = $this->tabx5."<td><a href=\"/".$this->controller_name."/<?=\$".$this->relational_model."->id?>\">".ucfirst($this->controller_name)." (<?= ".$this->model_name_for_calls."::count(\$".$this->relational_model."->id)?>) </a></td>".$this->sl;
 
 		$result = file_put_contents(APPPATH."views/".$this->relational_controller."/list.php" , $file );
 
