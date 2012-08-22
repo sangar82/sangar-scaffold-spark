@@ -15,7 +15,6 @@ class Scaffolds extends CI_Controller
 		$this->_set_rules();
 
 		//create control variables
-		$data['title'] = "Scaffolds";
 		$data['updType'] = 'create';
 
 		//validate the fields of form
@@ -35,6 +34,7 @@ class Scaffolds extends CI_Controller
 						'scaffold_bd' 			=>	$this->input->post('scaffold_bd', TRUE ),
 						'scaffold_routes' 		=>	$this->input->post('scaffold_routes', TRUE ),
 						'scaffold_menu' 		=>	$this->input->post('scaffold_menu', TRUE ),
+						'scaffold_model_type' 	=>	$this->input->post('scaffold_model_type', TRUE ),
 
 						'create_controller' 	=>	$this->input->post('create_controller', TRUE ),
 						'create_model' 			=>	$this->input->post('create_model', TRUE ),
