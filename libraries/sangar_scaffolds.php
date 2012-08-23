@@ -527,6 +527,14 @@ class ".ucfirst($this->controller_name)." extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
+";
+
+if ($this->scaffold_model_type == "activerecord")
+{
+	$data .= $this->sl.$this->tabx3."\$this->load->model('".$this->model_name."');";
+}
+
+$data .= "
 	}
 
 
