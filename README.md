@@ -2,7 +2,7 @@
 
 ###A new way to do scaffolding (works with php-activerecord and MySql).
 
-Sangar Scaffolds creates the files for CRUD operations for you! 
+Sangar Scaffolds creates the files for CRUD operations for you!
 
 It creates the tables on the database, the controllers, the models and the views.
 
@@ -24,6 +24,10 @@ Each element has validation rules and the possibility to do it multilanguage.
 
 Create also a paginated list view.
 
+##New Version 0.0.2
+- You can now select if you want models with Codeigniter ActiveRecord or php-activerecord (you need to install via sparks).
+- Delete php-activerecord dependencies
+- Fixed bugs
 
 ##Server Requirements
 
@@ -33,14 +37,19 @@ This version only works with MySql (postgres in progress..)
 
 ##Dependencies
 
-If you install this sparks via Sparks Manager, it will install the dependencies for you
-
-If you want to install the Sangar Scaffold Spark manually, you need to install before the php-activerecord sparks
+If you want to use php-activerecord as ORM instead of Codeigniter ActiveRecord, you need to install the php-activerecord sparks
 
 	php tools/spark install -v0.0.2 php-activerecord
 
 
 ##Sangar-scaffold-spark requirements
+
+###URL Structure
+
+The only allowed URL structure is the following:
+
+    http://www.yourdomain.com/controller/action/
+
 
 
 ###Disable index_page
@@ -127,6 +136,10 @@ This will create the files which you need to do CRUD operations (controller, mod
 If you need that your inputs could be multilingual, you must create an array of languages at your config.php
     
     $config['languages'] = array("en" => "english","es" => "spanish");
+
+And you must to add a new config parameter to say which is the actual language
+
+	$config['prefix_language']	= 'en';
 
 
 ##Folder for uploads

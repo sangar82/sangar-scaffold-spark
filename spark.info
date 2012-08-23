@@ -7,13 +7,13 @@ name: sangar-scaffolds
 
 # This is the current version of this spark. All sparks should be in
 #  x.x.x format. Validation will fail otherwise.
-version: 0.0.1
+version: 0.0.2
 
 # This is the version of CodeIgniter this spark is compatible up to. It should
 #  be in x.x.x format
 compatibility: 2.1.0
 
 #dependencies
-dependencies: php-activerecord: 0.0.2
+#dependencies: php-activerecord: 0.0.2
 
-tags: ["scaffold","scaffolding","code generator", "generator", "php-activerecord"]
+tags: ["scaffold","scaffolding","code generator", "generator", "php-activerecord", "activerecord", "database"]

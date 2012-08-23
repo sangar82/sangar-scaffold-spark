@@ -19,6 +19,7 @@ $lang['scaffolds_error_del_bd'] 		=	"Error borrando la tabla en la base de datos
 $lang['scaffolds_error_bd'] 			=	"Error creando la tabla en la base de datos:.";
 $lang['scaffolds_error_file'] 			=	"Error creando el archivo:";
 $lang['scaffolds_error_modify'] 		=	"Error modificando el archivo:";
+$lang['scaffolds_not_array_languages']	=	"Es necesario crear un array de lenguages en application/config/config.js para usar campos con multilenguaje";
 
 
 

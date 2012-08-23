@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-require_once FCPATH.'sparks/php-activerecord/0.0.2/vendor/php-activerecord/ActiveRecord.php'; 
+//require_once FCPATH.'sparks/php-activerecord/0.0.2/vendor/php-activerecord/ActiveRecord.php'; 
 
 class Sangar_scaffolds
 {
@@ -39,6 +39,7 @@ class Sangar_scaffolds
 
 	public $there_is_an_image;
 	public $there_is_a_file;
+	public $there_is_a_multilanguage_field;
 	public $array_thumbnails_uploads;
 	public $array_required_fields_uploads;
 
@@ -78,6 +79,15 @@ class Sangar_scaffolds
 
 		//Preparamos el JSON a partir de los datos enviados
 		$result = $this->prepare_json();
+
+		if ($result === FALSE)
+		{
+			return $this->errors;
+		}
+
+
+		//check is multilanguage is activated
+		$result = $this->check_array_language();
 
 		if ($result === FALSE)
 		{
@@ -216,6 +226,7 @@ class Sangar_scaffolds
 
 		$this->there_is_an_image 					= FALSE;
 		$this->there_is_a_file						= FALSE;
+		$this->there_is_a_multilanguage_field		= FALSE;
 
 		$this->there_is_a_relational_field			= FALSE;
 		$this->relational_field 					= FALSE;
@@ -301,6 +312,10 @@ class Sangar_scaffolds
 				$this->relational_controller		=   $value['controller'];
 				$this->relational_model				= 	$value['model'];
 			}
+
+			if (isset($value['multilanguage']))
+				if ($value['multilanguage'] === 'TRUE')
+					$this->there_is_a_multilanguage_field	=	TRUE;
 		}
 
 
@@ -312,6 +327,28 @@ class Sangar_scaffolds
 		{
 			$this->errors = lang('scaffolds_error_json');
 			return FALSE;
+		}
+
+	}
+
+
+	private function check_array_language()
+	{
+		if (  $this->there_is_a_multilanguage_field)
+		{
+			if ($this->languages == NULL or $this->actual_language == NULL)
+			{
+				$this->errors = lang('scaffolds_not_array_languages');
+				return FALSE;
+			}
+			else
+			{
+				return TRUE;
+			}
+		}
+		else
+		{
+			return TRUE;
 		}
 
 	}
@@ -1260,9 +1297,11 @@ $data .= "
 
 
 	function delete(\$id = NULL, \$page = 1)
-	{
-		\$files_to_delete = array();
+	{";
+		if ($this->there_is_a_file or $this->there_is_an_image) 
+			$data.= $this->sl.$this->tabx2."\$files_to_delete = array();".$this->sl;
 
+$data .= "
 		//filter & Sanitize \$id
 		\$id = (\$id != 0) ? filter_var(\$id, FILTER_VALIDATE_INT) : NULL;
 
@@ -1272,7 +1311,11 @@ $data .= "
 			
 			redirect('".$this->controller_name."');
 		}
-		
+";
+
+if ($this->scaffold_model_type == "phpactiverecord")
+{
+$data.="
 		//search the item to delete
 		if ( ".$this->model_name_for_calls."::exists(\$id) )
 		{
@@ -1284,12 +1327,31 @@ $data .= "
 			
 			redirect('".$this->controller_name."');		
 		}
-
-		";
+";
+}
+else
+{
+$data .= "
+		//search the item to delete
+		if ( !".$this->model_name_for_calls."::exists(\$id) )
+		{
+			\$this->session->set_flashdata('message', array( 'type' => 'warning', 'text' => lang('web_object_not_exist') ) );
+			
+			redirect('".$this->controller_name."');	
+		}
+";
 
 		if ($this->there_is_an_image or $this->there_is_a_file)
 		{
-			$data .= "//Save the files into array to delete after";
+$data .= $this->tabx2."else
+			\$".$this->model_name." = ".$this->model_name_for_calls."::find(\$id);
+";
+		}	
+}	
+
+		if ($this->there_is_an_image or $this->there_is_a_file)
+		{
+			$data .= $this->sl.$this->tabx2."//Save the files into array to delete after";
 		}
 
 	  	foreach ($this->arrayjson as $index => $value )
@@ -1304,12 +1366,12 @@ $data .= "
         				foreach ($this->languages as $prefix=>$language)
         				{
         					$aux = "_".$prefix;
-        					$data .= $this->sl.$this->tabx2."array_push(\$files_to_delete, \$".$this->model_name."->$index$aux);";
+        					$data .= $this->sl.$this->tabx2."array_push(\$files_to_delete, \$".$this->model_name."->$index$aux);".$this->sl;
         				}
         			}
         			else
         			{
-						$data .= $this->sl.$this->tabx2."array_push(\$files_to_delete, \$".$this->model_name."->$index);";
+						$data .= $this->sl.$this->tabx2."array_push(\$files_to_delete, \$".$this->model_name."->$index);".$this->sl;
         			}
 
         		break;
@@ -1318,7 +1380,6 @@ $data .= "
 
 
 $data .= "
-
 		//delete the item
 		".( ($this->scaffold_model_type == 'phpactiverecord') ? "if ( \$".$this->model_name."->delete() == TRUE) ": "if (".$this->model_name_for_calls."::delete(\$id) == TRUE) " )."
 		{
@@ -1369,8 +1430,9 @@ $data .= "
 	private function set_rules(\$id = NULL)
 	{
 		//Creamos los parametros de la funcion del constructor.
-		// More validations: http://codeigniter.com/user_guide/libraries/form_validation.html";
-		
+		// More validations: http://codeigniter.com/user_guide/libraries/form_validation.html
+";
+
     	foreach ($this->arrayjson as $index => $value )
     	{
       		switch ($value['type'])
@@ -1382,53 +1444,12 @@ $data .= "
 
         				foreach ($this->languages as $prefix=>$language)
         				{
-
-	        				if ($value['is_unique'] == "TRUE")
-	        				{
-        						$aux 		= "|is_unique[".$this->controller_name.".".$index."_".$prefix."]";
-        						$auxwithid 	= "|is_unique[".$this->controller_name.".".$index."_".$prefix.".id.\$id]";
-
-	$data .= "
-		if (\$id)
-		{
-			\$this->form_validation->set_rules('".$index."_".$prefix."', '".ucfirst($index)." ($prefix)', \"".(($value['required'] == 'TRUE') ? 'required|' : '')."trim|xss_clean|min_length[".$value['minlength']."]|max_length[".$value['maxlength']."]$auxwithid\");
-		}
-		else
-		{
-			\$this->form_validation->set_rules('".$index."_".$prefix."', '".ucfirst($index)." ($prefix)', \"".(($value['required'] == 'TRUE') ? 'required|' : '')."trim|xss_clean|min_length[".$value['minlength']."]|max_length[".$value['maxlength']."]$aux\");
-		}
-	";
-
-	        				}
-	        				else
-	        				{
-	        					$data .= $this->tabx2."\$this->form_validation->set_rules('".$index."_".$prefix."', '".ucfirst($index)." ($prefix)', '".(($value['required'] == 'TRUE') ? 'required|' : '')."trim|xss_clean|min_length[".$value['minlength']."]|max_length[".$value['maxlength']."]');".$this->sl;
-	        				}
+	        				$data .= $this->tabx2."\$this->form_validation->set_rules('".$index."_".$prefix."', '".ucfirst($index)." ($prefix)', '".(($value['required'] == 'TRUE') ? 'required|' : '')."trim|xss_clean|min_length[".$value['minlength']."]|max_length[".$value['maxlength']."]');".$this->sl;	
         				}
         			}
         			else
         			{
-        				if ($value['is_unique'] == "TRUE")
-        				{
-        					$aux 		= "|is_unique[".$this->controller_name.".".$index."]";
-        					$auxwithid 	= "|is_unique[".$this->controller_name.".".$index.".id.\$id]";
-
-	$data .= "
-		if (\$id)
-		{
-			\$this->form_validation->set_rules('$index', '$index', \"".(($value['required'] == 'TRUE') ? 'required|' : '')."trim|xss_clean|min_length[".$value['minlength']."]|max_length[".$value['maxlength']."]$auxwithid\");
-		}
-		else
-		{
-			\$this->form_validation->set_rules('$index', '$index', \"".(($value['required'] == 'TRUE') ? 'required|' : '')."trim|xss_clean|min_length[".$value['minlength']."]|max_length[".$value['maxlength']."]$aux\");
-		}
-
-";  
-        				}
-        				else
-        				{
-        					$data .= $this->sl.$this->tabx2."\$this->form_validation->set_rules('$index', '$index', '".(($value['required'] == 'TRUE') ? 'required|' : '')."trim|xss_clean|min_length[".$value['minlength']."]|max_length[".$value['maxlength']."]');".$this->sl;
-        				}        				
+        				$data .= $this->tabx2."\$this->form_validation->set_rules('$index', '$index', '".(($value['required'] == 'TRUE') ? 'required|' : '')."trim|xss_clean|min_length[".$value['minlength']."]|max_length[".$value['maxlength']."]');".$this->sl;	        				
         			}
 
         		break;
@@ -1439,19 +1460,12 @@ $data .= "
         			{
         				foreach ($this->languages as $prefix=>$language)
         				{
-        					if ( $value['ckeditor'] == "TRUE")
-								$data .= $this->sl.$this->tabx2."\$this->form_validation->set_rules('".$index."_".$prefix."', '".ucfirst($index)." ($prefix)', '".(($value['required'] == 'TRUE') ? 'required|' : '')."trim|min_length[".$value['minlength']."]|max_length[".$value['maxlength']."]');".$this->sl;
-							else
-								$data .= $this->sl.$this->tabx2."\$this->form_validation->set_rules('".$index."_".$prefix."', '".ucfirst($index)." ($prefix)', '".(($value['required'] == 'TRUE') ? 'required|' : '')."trim|xss_clean|min_length[".$value['minlength']."]|max_length[".$value['maxlength']."]');".$this->sl;
+							$data .= $this->tabx2."\$this->form_validation->set_rules('".$index."_".$prefix."', '".ucfirst($index)." ($prefix)', '".(($value['required'] == 'TRUE') ? 'required|' : '')."trim|xss_clean|min_length[".$value['minlength']."]|max_length[".$value['maxlength']."]');".$this->sl;
         				}
         			}
         			else
         			{
-        				if ( $value['ckeditor'] == "TRUE")
-        					$data .= $this->sl.$this->tabx2."\$this->form_validation->set_rules('$index', '$index', '".(($value['required'] == 'TRUE') ? 'required|' : '')."trim|min_length[".$value['minlength']."]|max_length[".$value['maxlength']."]');".$this->sl;
-        				else
-        					$data .= $this->sl.$this->tabx2."\$this->form_validation->set_rules('$index', '$index', '".(($value['required'] == 'TRUE') ? 'required|' : '')."trim|xss_clean|min_length[".$value['minlength']."]|max_length[".$value['maxlength']."]');".$this->sl;
-        				$data .= $this->tabx5;
+        				$data .= $this->tabx2."\$this->form_validation->set_rules('$index', '$index', '".(($value['required'] == 'TRUE') ? 'required|' : '')."trim|xss_clean|min_length[".$value['minlength']."]|max_length[".$value['maxlength']."]');".$this->sl;
         			}
 
         		break;
@@ -1462,16 +1476,16 @@ $data .= "
         		case 'radio':
         		case 'datepicker':
 
-        	    	$data .= $this->sl.$this->tabx2."\$this->form_validation->set_rules('$index', '$index', '".(($value['required'] == 'TRUE') ? 'required|' : '')."xss_clean');".$this->sl;
-        			$data .= $this->tabx5;	
+        	    	$data .= $this->tabx2."\$this->form_validation->set_rules('$index', '$index', '".(($value['required'] == 'TRUE') ? 'required|' : '')."xss_clean');".$this->sl;
+        			
 
         		break;
 
 
         		case 'hidden':
 
-        	    	$data .= $this->sl.$this->tabx2."\$this->form_validation->set_rules('$index', '$index', 'requires|trim|is_numeric|xss_clean');".$this->sl;
-        			$data .= $this->tabx5;	
+        	    	$data .= $this->tabx2."\$this->form_validation->set_rules('$index', '$index', 'requires|trim|is_numeric|xss_clean');".$this->sl;
+  
 
         		break;
         	}
@@ -1493,28 +1507,29 @@ $data .= "
 ";
 
 if ($this->there_is_a_relational_field)
+{
 
-if ($this->scaffold_model_type == 'phpactiverecord')
-{	
-$data .= "
+	if ($this->scaffold_model_type == 'phpactiverecord')
+	{	
+		$data .= "
 		\$config['total_rows'] = ".ucfirst($this->model_name)."::count(array('conditions' => array('".$this->relational_field." = ?', \$".$this->relational_field.")));
 
 		\$config['uri_segment'] = 3;";
-} 
-else if ($this->scaffold_model_type == 'activerecord')
-{
-$data .= "
+		} 
+	else if ($this->scaffold_model_type == 'activerecord')
+	{
+		$data .= "
 		\$config['total_rows'] = ".ucfirst($this->model_name)."::count(\$".$this->relational_field.");
 
 		\$config['uri_segment'] = 3;";
-} 
-
+		} 
+}
 else
+
 $data .= "
 		\$config['total_rows'] = ".ucfirst($this->model_name)."::count();
 
 		\$config['uri_segment'] = 2;";
-
 
 $data .= "
 
@@ -1911,66 +1926,6 @@ $data .= "
 </script>
 ";
         		break;
-
-        		case 'textarea':
-				if ($value['ckeditor'] == "TRUE")
-				{
-					if ($value['multilanguage'] == "TRUE")
-					{
-$data .= "
-<script type='text/javascript'>
-
-	$(document).ready(function(){
-
-";
-						foreach ($this->languages as $prefix=>$language)
-						{
-							$data.="CKEDITOR.replace( '".$index."_".$prefix."', {filebrowserUploadUrl : \"ckeditor/\"});";
-						}
-$data .= "
-		$('#submit').click(function() {
-";
-
-						foreach ($this->languages as $prefix=>$language)
-						{
-							$data .="CKEDITOR.instances.".$index."_".$prefix.".updateElement();";
-						}
-			
-$data.="
-			return true;
-
-		});
-
-	});
-
-</script>
-";	
-					}
-					else
-					{
-$data .= "
-<script type='text/javascript'>
-
-	$(document).ready(function(){
-
-		CKEDITOR.replace( '".$index."', {filebrowserUploadUrl : \"ckeditor/\"});
-
-		$('#submit').click(function() {
-
-			CKEDITOR.instances.".$index.".updateElement();
-
-			return true;
-
-		});
-
-	});
-
-</script>
-";							
-					}
-				}
-        		break;
-
         	}
         }
 
@@ -2251,7 +2206,38 @@ $data .= "
 
 	private function create_view_list()
 	{
-		$data = "";
+$data = "
+<?php
+
+    \$message = \$this->session->flashdata('message');
+
+    if(\$message)
+    {
+    	if ( is_array(\$message['text']))
+    	{
+	        echo \"<div class='msg_\".\$message['type'].\"'>\";
+
+                echo \"<ul>\";
+
+                foreach (\$message['text'] as \$msg) {
+                    echo \"<li><span>\".\$msg.\"</span></li>\";
+                }
+
+                echo \"<ul>\";
+
+	        echo \"</div>\";
+	    }
+    	else
+    	{
+	        echo \"<div class='msg_\".\$message['type'].\"'>\";
+
+	            echo \"<span>\".\$message['text'] . \"</span>\";
+
+	        echo \"</div>\";
+	    }
+    }
+?>
+";
 
 foreach ($this->arrayjson as $index => $value )
 {

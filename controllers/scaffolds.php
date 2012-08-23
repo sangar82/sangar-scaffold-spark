@@ -54,7 +54,7 @@ class Scaffolds extends CI_Controller
 			{
 				$this->session->set_flashdata('message', array( 'type' => 'error', 'text' => $result ));
 				
-				$this->load->view('/scaffolds/create', $data);
+				$this->load->view('scaffolds_create.php', $data);
 			}
 	  	} 
 	}

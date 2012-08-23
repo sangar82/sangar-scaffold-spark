@@ -19,14 +19,7 @@ $lang['scaffolds_error_del_bd'] 		=	"Error deleting the BD table:.";
 $lang['scaffolds_error_bd'] 			=	"Error creating the BD table:.";
 $lang['scaffolds_error_file'] 			=	"Error creating the file:";
 $lang['scaffolds_error_modify'] 		=	"Error modifying the file:";
-
-
-
-
-
-
-
-
+$lang['scaffolds_not_array_languages']	=	"You need to create an array of lAnguages ​​in application / config / config.js to use fields with multilanguage";
 
 
 

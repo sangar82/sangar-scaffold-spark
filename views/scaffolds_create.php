@@ -52,6 +52,41 @@
         font-style: italic;
     }
 
+    /* icons flashdata */
+    .msg_error, .msg_success, .msg_info, .msg_warning {
+      padding: 7px 8px 7px 6px;
+      border-style: solid;
+      border-width: 1px;
+      margin-bottom: 30px;
+      font-size:15px;
+      font-family:Arial, Helvetica, sans-serif;
+      margin-top:0px;
+    }
+
+    .msg_error span, .msg_success span, .msg_info span, .msg_warning span {
+      background-repeat: no-repeat;
+      background-position: top left;
+      display: block;
+      padding: 3px 0px 3px 31px;
+      line-height: 1.2;
+     }
+
+    .msg_error { background:#FAF0F0; border-color: #DF7D7D;}
+    .msg_error span { background-image: url(/public/img/flash_icons/error.png); }
+    .msg_success { background: #F0FAF0; border-color: #82CE76; }
+    .msg_success span { background-image: url(/public/img/flash_icons/success.png); }
+    .msg_info { background:#E8F6F6;border-color: #6B99C7; }
+    .msg_info span { background-image: url(/public/img/flash_icons/info.gif); }
+    .msg_warning { background:#F7F3E8; border-color: #E4964D; }
+    .msg_warning span { background-image: url(/public/img/flash_icons/warning.png);background-position: 1px -2px; }
+    /* icons flashdata */
+
+
+
+    .clear, .clearFix{
+        clear:both;
+    }    
+
   </style>
   
 </head>
@@ -79,7 +114,7 @@
                 echo "<ul>";
 
                 foreach ($message['text'] as $msg) {
-                    echo "<li><span>".$msg."</span></li>";
+                    echo "<li><span>ERROR: ".$msg."</span></li>";
                 }
 
                 echo "<ul>";
@@ -90,7 +125,7 @@
       {
           echo "<div class='msg_".$message['type']."'>";
 
-              echo "<span>".$message['text'] . "</span>";
+              echo "<span>ERROR: ".$message['text'] . "</span>";
 
           echo "</div>";
       }
@@ -182,8 +217,7 @@
     "minlength"     :   "0",
     "maxlength"     :   "60",
     "required"      :   "FALSE",
-    "multilanguage" :   "FALSE",
-    "is_unique"     : "FALSE"
+    "multilanguage" :   "FALSE"
   }
   </pre>
   </div>

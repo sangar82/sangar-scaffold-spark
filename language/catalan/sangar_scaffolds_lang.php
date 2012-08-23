@@ -19,6 +19,7 @@ $lang['scaffolds_error_del_bd'] 		=	"Error borrant la taula a la base de dades:.
 $lang['scaffolds_error_bd'] 			=	"Error creant la taula a la base de dades:.";
 $lang['scaffolds_error_file'] 			=	"Error creant l'arxiu:";
 $lang['scaffolds_error_modify'] 		=	"Error modificant l'arxiu:";
+$lang['scaffolds_not_array_languages']	=	"Es necessari crear un array de llenguatges a application/config/config.js per poder utilitzar camps amb multillenguatge";
 
 
 
