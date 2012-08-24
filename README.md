@@ -1,6 +1,6 @@
 #sangar-scaffold-spark
 
-###A new way to do scaffolding (works with php-activerecord and MySql).
+###A new way to do scaffolding (now works with codeigniter ActiveRecord or php-activerecord).
 
 Sangar Scaffolds creates the files for CRUD operations for you!
 
