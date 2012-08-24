@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Sangar-scaffold-spark : A new way to do scaffolding (works with php-activerecord)" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Sangar-scaffold-spark</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/sangar82/sangar-scaffold-spark">View on GitHub</a>
+
+          <h1 id="project_title">Sangar-scaffold-spark</h1>
+          <h2 id="project_tagline">A new way to do scaffolding (works with php-activerecord)</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/sangar82/sangar-scaffold-spark/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/sangar82/sangar-scaffold-spark/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>sangar-scaffold-spark</h1>
+
+<h3>A new way to do scaffolding (works with php-activerecord and MySql).</h3>
+
+<p>Sangar Scaffolds creates the files for CRUD operations for you!</p>
+
+<p>It creates the tables on the database, the controllers, the models and the views.</p>
+
+<p>It also modifies the routes.php file.</p>
+
+<p>You can create forms with the followings elements:</p>
+
+<ul>
+<li>name</li>
+<li>textarea</li>
+<li>radiobuttons</li>
+<li>checkboxes</li>
+<li>select</li>
+<li>select 1:N (populate the form select with a existent Model)</li>
+<li>upload images (with thumbnail creation and uploads rules)</li>
+<li>upload files (with uploads rules)</li>
+<li>hidden relational (It's a special element. Only one hidden relational by scaffolding is allowed. It will produce a form with relation 1:N linked with his parent form automatically)</li>
+</ul><p>Each element has validation rules and the possibility to do it multilanguage.</p>
+
+<p>Create also a paginated list view.</p>
+
+<h2>New Version 0.0.2</h2>
+
+<ul>
+<li>You can now select if you want models with Codeigniter ActiveRecord or php-activerecord (you need to install via sparks).</li>
+<li>Delete php-activerecord dependencies</li>
+<li>Fixed bugs</li>
+</ul><h2>Server Requirements</h2>
+
+<p>PHP version 5.3.5 or newer.
+This version only works with MySql (postgres in progress..)</p>
+
+<h2>Dependencies</h2>
+
+<p>If you want to use php-activerecord as ORM instead of Codeigniter ActiveRecord, you need to install the php-activerecord sparks</p>
+
+<pre><code>php tools/spark install -v0.0.2 php-activerecord
+</code></pre>
+
+<h2>Sangar-scaffold-spark requirements</h2>
+
+<h3>URL Structure</h3>
+
+<p>The only allowed URL structure is the following:</p>
+
+<pre><code>http://www.yourdomain.com/controller/action/
+</code></pre>
+
+<h3>Disable index_page</h3>
+
+<p>Sangar-scaffold-spark needs that you don't use 'index.php' in your base_url.</p>
+
+<p>To disable this function, go to the config folder and edit the config.php</p>
+
+<p>Change</p>
+
+<pre><code>$config['index_page'] = 'index.php';
+</code></pre>
+
+<p>to</p>
+
+<pre><code>$config['index_page'] = '';
+</code></pre>
+
+<p>Create and .htaccess file in your root folder with the following code:</p>
+
+<pre><code>AddDefaultCharset UTF-8
+
+RewriteEngine on
+
+RewriteCond $1 !^(index\.php|public|robots\.txt)
+
+RewriteRule ^(.*)$ /index.php/$1 [L]
+</code></pre>
+
+<p>Remove the index.php file on Codeigniter User Guide: <a href="http://codeigniter.com/user_guide/general/urls.html">http://codeigniter.com/user_guide/general/urls.html</a></p>
+
+<h3>Access via domain, not via localhost</h3>
+
+<p>You must create a virtualhost (and modify your host file) and access your Codeigniter project via domain, don't use localhost. 
+For example, you must use <a href="http://www.yourdomain.com">www.yourdomain.com</a> instead of http://localhost/yourdomain</p>
+
+<h2>How to use it?</h2>
+
+<p>You can install via sparks manager:</p>
+
+<pre><code>php tools/spark install -v0.0.1 sangar-scaffold 
+</code></pre>
+
+<p>Or install manually, copy the spark files in your application folder. Each one in its respective folder.</p>
+
+<p>Copy the file controllers/scaffolds.php and views/scaffolds_create.php of this spark in your application directory. Each one in its respective folders.</p>
+
+<p>Add this line to your autoload file (/config/autoload.php)</p>
+
+<pre><code>$autoload['sparks'] = array('sangar-scaffold/0.0.1', 'php-activerecord/0.0.2');
+</code></pre>
+
+<p>Go to the scaffold page</p>
+
+<pre><code>www.yourdomain.com/scaffolds
+</code></pre>
+
+<p>Follow the instructions and create a new scaffold</p>
+
+<p>This will create the files which you need to do CRUD operations (controller, model, and two views: create and list).</p>
+
+<h2>How create a new scaffold</h2>
+
+<ul>
+<li>Write the Controller name you want produce.</li>
+<li>Write the Model name you want produce.</li>
+<li>Copy the code blocks of elements you need and paste to scaffold code textarea. Each code block must be separated by commas. The scaffold code is a JSON without the first '{' and the last '}'</li>
+<li>Choose the options you want</li>
+<li>Scaffold!</li>
+</ul><h2>Multilanguage form inputs</h2>
+
+<p>If you need that your inputs could be multilingual, you must create an array of languages at your config.php</p>
+
+<pre><code>$config['languages'] = array("en" =&gt; "english","es" =&gt; "spanish");
+</code></pre>
+
+<p>And you must to add a new config parameter to say which is the actual language</p>
+
+<pre><code>$config['prefix_language']  = 'en';
+</code></pre>
+
+<h2>Folder for uploads</h2>
+
+<p>If you want to upload files, you must create a folder in your root folder named public, and inside this, another folder called uploads. Your uploads will go there. :)</p>
+
+<h2>CSS for scaffolds</h2>
+
+<p>If you want, you will find a css to link with your scaffold code inside the resources directory. It will look much better. :)</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Sangar-scaffold-spark maintained by <a href="https://github.com/sangar82">sangar82</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
