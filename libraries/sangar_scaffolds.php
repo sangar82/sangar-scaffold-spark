@@ -357,9 +357,7 @@ class Sangar_scaffolds
 	{
 		$sql = "DROP TABLE IF EXISTS ".$this->controller_name.";";
 
-		//$result = $this->ci->db->query($sql);
-		$conn = ActiveRecord\ConnectionManager::get_connection("development");
-		$result = (object)$conn->query($sql);
+		$result = $this->ci->db->query($sql);
 
 		if ($result)
 			return TRUE;
@@ -499,9 +497,7 @@ class Sangar_scaffolds
 				break;
 		}
 
-		//$result = $this->ci->db->query($sql_table);
-		$conn = ActiveRecord\ConnectionManager::get_connection("development");
-		$result = (object)$conn->query($sql_table);
+		$result = $this->ci->db->query($sql_table);
 		
 
 		if ($result)
