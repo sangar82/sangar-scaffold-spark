@@ -600,14 +600,14 @@ $data.="
         		case 'selectbd':
         			if ($this->scaffold_model_type == "phpactiverecord")
 					{
-						$data .= "\$data['array_".strtolower($value['options']['model'])."']	= 	".$value['options']['model']."::find('all', array('order' => '".$value['options']['order']."' ));
-        			";
+						$data .= $this->sl.$this->tabx2."//Load the model for the select 1:N";
+						$data .= $this->sl.$this->tabx2."\$data['array_".strtolower($value['options']['model'])."']	= 	".$value['options']['model']."::find('all', array('order' => '".$value['options']['order']."' ));".$this->sl.$this->sl.$this->tabx2;	
 					}
 					else if ($this->scaffold_model_type == "activerecord")
 					{
-						$data .= "\$this->load->model('".strtolower($value['options']['model'])."');";
-						$data .= $this->sl."\$data['array_".strtolower($value['options']['model'])."']	= 	".$value['options']['model']."::find_all('".$value['options']['order']."');
-        			";	
+						$data .= $this->sl.$this->tabx2."//Load the model for the select 1:N";
+						$data .= $this->sl.$this->tabx2."\$this->load->model('".strtolower($value['options']['model'])."');";
+						$data .= $this->sl.$this->tabx2."\$data['array_".strtolower($value['options']['model'])."']	= 	".$value['options']['model']."::find_all('".$value['options']['order']."');".$this->sl.$this->sl.$this->tabx2;	
 					}
         		break;
         	}
@@ -990,12 +990,14 @@ $data .= "
 
         			if ($this->scaffold_model_type == "phpactiverecord")
 					{
-						$data .= "\$data['array_".strtolower($value['options']['model'])."']	= 	".$value['options']['model']."::find('all', array('order' => '".$value['options']['order']."' ));";
+						$data .= $this->sl.$this->tabx2."//Load the model for the select 1:N";
+						$data .= $this->sl.$this->tabx2."\$data['array_".strtolower($value['options']['model'])."']	= 	".$value['options']['model']."::find('all', array('order' => '".$value['options']['order']."' ));".$this->sl;
 					}
 					else if ($this->scaffold_model_type == "activerecord")
 					{
-						$data .= "\$this->load->model('".strtolower($value['options']['model'])."');";
-						$data .= $this->sl."\$data['array_".strtolower($value['options']['model'])."']	= 	".$value['options']['model']."::find_all('".$value['options']['order']."');
+						$data .= $this->sl.$this->tabx2."//Load the model for the select 1:N";
+						$data .= $this->sl.$this->tabx2."\$this->load->model('".strtolower($value['options']['model'])."');";
+						$data .= $this->sl.$this->tabx2."\$data['array_".strtolower($value['options']['model'])."']	= 	".$value['options']['model']."::find_all('".$value['options']['order']."');
         			";	
 					}
 
