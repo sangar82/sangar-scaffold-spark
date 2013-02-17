@@ -24,15 +24,12 @@ Each element has validation rules and the possibility to do it multilanguage.
 
 Create also a paginated list view.
 
-##New Version 0.0.2
-- You can now select if you want models with Codeigniter ActiveRecord or php-activerecord (you need to install via sparks).
-- Delete php-activerecord dependencies
-- Fixed bugs
+##New Version 0.0.3
+Bug fixes
 
 ##Server Requirements
-
 PHP version 5.3.5 or newer.
-This version only works with MySql (postgres in progress..)
+Create the tables on database only works with MySql
 
 
 ##Dependencies
@@ -46,7 +43,7 @@ If you want to use php-activerecord as ORM instead of Codeigniter ActiveRecord, 
 
 ###URL Structure
 
-The only allowed URL structure is the following:
+The only allowed URL structure for the scaffold code is the following:
 
     http://www.yourdomain.com/controller/action/
 
@@ -97,7 +94,7 @@ For example, you must use www.yourdomain.com instead of http://localhost/yourdom
 
 You can install via sparks manager:
 
-	php tools/spark install -v0.0.1 sangar-scaffold 
+	php tools/spark install -v0.0.3 sangar-scaffold 
 
 
 Or install manually, copy the spark files in your application folder. Each one in its respective folder.
@@ -106,9 +103,13 @@ Or install manually, copy the spark files in your application folder. Each one i
 
 Copy the file controllers/scaffolds.php and views/scaffolds_create.php of this spark in your application directory. Each one in its respective folders.
 
-Add this line to your autoload file (/config/autoload.php)
+Add this line to your autoload file (/config/autoload.php) if you want to use activerecord
 
-	$autoload['sparks'] = array('sangar-scaffold/0.0.1', 'php-activerecord/0.0.2');
+	$autoload['sparks'] = array('sangar-scaffold/0.0.3');
+
+And this if you want to use php-activerecord
+
+	$autoload['sparks'] = array('sangar-scaffold/0.0.3', 'php-activerecord/0.0.2');
 
 
 Go to the scaffold page
@@ -133,7 +134,7 @@ This will create the files which you need to do CRUD operations (controller, mod
 
 ##Multilanguage form inputs
 
-If you need that your inputs could be multilingual, you must create an array of languages at your config.php
+If you need that your inputs could be multilanguage, you must create an array of languages at your config.php
     
     $config['languages'] = array("en" => "english","es" => "spanish");
 
@@ -144,12 +145,12 @@ And you must to add a new config parameter to say which is the actual language
 
 ##Folder for uploads
 
-If you want to upload files, you must create a folder in your root folder named public, and inside this, another folder called uploads. Your uploads will go there. :)
+If you want to upload files, you must create a folder in your root folder named public, and inside this, another folder called uploads. Your uploads will go there.
 
 
 ##CSS for scaffolds
 
-If you want, you will find a css to link with your scaffold code inside the resources directory. It will look much better. :)
+If you want, you will find a css to link with your scaffold code inside the resources directory. It will look much better.
 
 
 
