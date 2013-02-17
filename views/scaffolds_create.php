@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="css/bstyles.css" type="text/css" media="screen" />
   <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.3/themes/smoothness/jquery-ui.css" type="text/css" media="screen" />
 
-  <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+  <script src="http://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js" type="text/javascript"></script>
   
 
