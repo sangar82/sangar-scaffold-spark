@@ -598,7 +598,17 @@ $data.="
       		switch ($value['type'])
       		{
         		case 'selectbd':
-        			$data .= "\$data['array_".strtolower($value['options']['model'])."']	= 	".$value['options']['model']."::find('all', array('order' => '".$value['options']['order']."' ));";
+        			if ($this->scaffold_model_type == "phpactiverecord")
+					{
+						$data .= "\$data['array_".strtolower($value['options']['model'])."']	= 	".$value['options']['model']."::find('all', array('order' => '".$value['options']['order']."' ));
+        			";
+					}
+					else if ($this->scaffold_model_type == "activerecord")
+					{
+						$data .= "\$this->load->model('".strtolower($value['options']['model'])."');";
+						$data .= $this->sl."\$data['array_".strtolower($value['options']['model'])."']	= 	".$value['options']['model']."::find_all('".$value['options']['order']."');
+        			";	
+					}
         		break;
         	}
         }
@@ -977,7 +987,18 @@ $data .= "
       		switch ($value['type'])
       		{
         		case 'selectbd':
-        			$data .= "\$data['array_".strtolower($value['options']['model'])."']	= 	".$value['options']['model']."::find('all', array('order' => '".$value['options']['order']."' ));";
+
+        			if ($this->scaffold_model_type == "phpactiverecord")
+					{
+						$data .= "\$data['array_".strtolower($value['options']['model'])."']	= 	".$value['options']['model']."::find('all', array('order' => '".$value['options']['order']."' ));";
+					}
+					else if ($this->scaffold_model_type == "activerecord")
+					{
+						$data .= "\$this->load->model('".strtolower($value['options']['model'])."');";
+						$data .= $this->sl."\$data['array_".strtolower($value['options']['model'])."']	= 	".$value['options']['model']."::find_all('".$value['options']['order']."');
+        			";	
+					}
+
         		break;
         	}
         }
@@ -1820,6 +1841,15 @@ class ".$this->model_name_for_calls." extends CI_Model{
     	\$result = \$query->result();
     	return (\$result[0]);
     }
+
+
+    function find_all(\$order = 'id asc', \$where = array() )
+    {
+        \$query = \$this->db->order_by(\$order)->get_where('".$this->controller_name."', \$where);
+
+        \$result = \$query->result();
+        return \$result;
+    }    
 
 
     function exists(\$id)
