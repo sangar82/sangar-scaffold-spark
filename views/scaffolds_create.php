@@ -92,7 +92,7 @@
 <body>
 
   <div id='content-top'>
-      <h2>Sangar Scaffolds</h2>
+      <h2>Sangar Scaffolding</h2>
       <span class='clearFix'>&nbsp;</span>
   </div>
 
@@ -159,7 +159,7 @@
 
 
     <p>
-      <label class='labelform' for="scaffold_code">Scaffold code <span class="required">*</span><br></label>
+      <label class='labelform' for="scaffold_code">Scaffolding code <span class="required">*</span><br></label>
 
       <textarea id="scaffold_code"  name="scaffold_code"  rows='80' class='scaffold_textarea' /><?php echo set_value('scaffold_code', ''); ?></textarea>
 
@@ -195,7 +195,7 @@
     </p>
 
     <p>
-        <?php echo form_submit( 'submit', 'Scaffold!',  "class='bcreateform'"); ?>
+        <?php echo form_submit( 'submit', 'Create Scaffolding!',  "class='bcreateform'"); ?>
     </p>
 
 
@@ -277,24 +277,28 @@
   </div>  
 
 
-  <h3><a href="#">Select 1:N</a></h3>
-  <div>
-  <pre>
-  "category_id": 
-  {                                        
-    "type"        : "selectbd",
-    "size"        : "1", 
-    "required"    : "TRUE",
-    "options": 
-    {
-      "model"         : "Category",
-      "field_value"   : "id",
-      "field_text"    : "name",
-      "order"         : "name ASC"
-    }
-  } 
-  </pre>
-  </div>
+<h3><a href="#">Select 1:N</a></h3>
+<div>
+<pre>
+"category_id" : 
+{                                        
+  "type"        : "selectbd",
+  "size"        : "1", 
+  "required"    : "TRUE",
+  "options"   : 
+  {
+    "model"     : "[name_model_to_link]",
+    "field_value"   : "id",
+    "field_text"    : "name",
+    "order"     : "name ASC"
+  }
+} 
+</pre>
+
+<br>
+<i><b>Info:</b> populate the form select with a existent Model. Change the model name on options with the model name to populate without brackets</i>
+</div>
+
 
   <h3><a href="#">Radio Buttons</a></h3>
   <div>
@@ -368,17 +372,36 @@
   </div>
 
 
-  <h3><a href="#">Hidden Relational</a></h3>
-  <div>
-  <pre>
-  "category_id": 
-  {
-    "type"          : "hidden",
-    "controller"    : "name_controller",
-    "model"         : "name_model"
-  } 
-  </pre>
-  </div>
+<h3><a href="#">Form Relational 1:N</a></h3>
+<div>
+<pre>
+"[name_model_to_link]_id" : 
+{
+  "type"           : "hidden",
+  "controller"    : "[name_controller_to_link]",
+  "model"         : "[name_model_to_link]"
+}
+</pre>
+
+<br/><br/><i><b>Info:</b><br> 
+-Change the brackets for the corresponding name<br>
+-Put this code the last and only one for scaffolding<br>
+-It will produce a new form with relation 1:N with the model to link
+-It will be accesible on the parent form list
+<br>
+</i><br/>
+
+<pre style='font-size:11px;'>
+Ex: 
+"category_id" : 
+{
+  "type"           : "hidden",
+  "controller"    : "categories",
+  "model"         : "category"
+}
+</pre>
+
+</div>
 
 
 
